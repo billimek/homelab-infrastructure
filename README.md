@@ -5,11 +5,14 @@ Infrastructure info and setup for homelab
 
 [network diagram and details](network-diagram.md)
 
-## Proxmox
+## rke vs k3s
 
-[proxmox configuration and setup](proxmox.md)
+Depending on the approach, **rke** or **k3s** will be leveraged, choose one of the following:
 
-## HAProxy
+### rke
 
-[haproxy configuration and setup](haproxy.md)
+[rke configuration and setup](rke/README.md)
 
+### k3s
+
+[k3s configuration and setup](k3s/README.md)
