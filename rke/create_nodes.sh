@@ -12,6 +12,7 @@ qm clone "$TEMPLATE" 200 --name k8s-master-a
 qm set 200 --sshkey ~/.ssh/id_k8s_nodes.pub
 qm set 200 --ipconfig0 ip=10.2.0.10/24,gw=10.2.0.1
 qm set 200 --ipconfig1 ip=10.0.10.50/24
+qm move_disk 200 scsi0 zfs-prox --format=raw --delete=true
 
 qm clone "$TEMPLATE" 201 --name k8s-master-b
 qm set 201 --sshkey ~/.ssh/id_k8s_nodes.pub
@@ -26,8 +27,11 @@ qm set 202 --ipconfig1 ip=10.0.10.52/24
 qm migrate 202 proxmox-c
 
 qm start 200
+ssh proxmox-b 'qm move_disk 201 scsi0 zfs-prox --format=raw --delete=true'
 ssh proxmox-b 'qm start 201'
+ssh proxmox-c 'qm move_disk 202 scsi0 zfs-prox --format=raw --delete=true'
 ssh proxmox-c 'qm start 202'
+
 #####################
 ## WORKER NODES
 #####################
@@ -40,6 +44,7 @@ qm set 203 --ipconfig0 ip=10.2.0.13/24,gw=10.2.0.1
 qm set 203 --ipconfig1 ip=10.0.10.53/24
 qm set 203 --scsi1 /dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S3Z1NW0KA01733D,discard=on,backup=0,ssd=1,replicate=0,serial=S3Z1NW0KA01733D
 qm set 203 --memory 8192
+qm move_disk 203 scsi0 zfs-prox --format=raw --delete=true
 
 qm clone "$TEMPLATE" 204 --name k8s-2
 qm set 204 --sshkey ~/.ssh/id_k8s_nodes.pub
@@ -57,5 +62,5 @@ qm set 205 --memory 8192
 qm migrate 205 proxmox-c
 
 qm start 203
-ssh proxmox-b 'qm set 204 --scsi1 /dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S3Z1NW0KA01748E,discard=on,backup=0,ssd=1,replicate=0,serial=S3Z1NW0KA01748E && qm start 204'
-ssh proxmox-c 'qm set 205 --scsi1 /dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S3Z1NB0K624788N,discard=on,backup=0,ssd=1,replicate=0,serial=S3Z1NB0K624788N && qm start 205'
+ssh proxmox-b 'qm set 204 --scsi1 /dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S3Z1NW0KA01748E,discard=on,backup=0,ssd=1,replicate=0,serial=S3Z1NW0KA01748E && qm move_disk 204 scsi0 zfs-prox --format=raw --delete=true && qm start 204'
+ssh proxmox-c 'qm set 205 --scsi1 /dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S3Z1NB0K624788N,discard=on,backup=0,ssd=1,replicate=0,serial=S3Z1NB0K624788N && qm move_disk 205 scsi0 zfs-prox --format=raw --delete=true && qm start 205'

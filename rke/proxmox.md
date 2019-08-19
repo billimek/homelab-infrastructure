@@ -38,10 +38,11 @@ Enhance the rke template with necessary tools and tweaks:
 qm start 9002
 ssh ubuntu@10.0.7.50
 
-sudo apt-get install htop glances iotop zsh jq ceph-common gdisk iperf qemu-guest-agent nfs-common  docker.io
+sudo apt-get install htop glances iotop zsh jq ceph-common gdisk iperf qemu-guest-agent nfs-common docker.io
 sudo usermod -aG docker ubuntu
 sudo rm /etc/resolv.conf
 sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+shutdown -h "now"
 exit
 
 qm template 9002
