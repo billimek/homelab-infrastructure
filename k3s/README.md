@@ -42,6 +42,7 @@ qm template 9101
 ### Create the nodes
 
 ```shell
+export PM_PASS=<your_proxmox_terraform_password_here>
 terraform init
 terraform plan
 terraform apply
