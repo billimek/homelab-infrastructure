@@ -1,7 +1,6 @@
 provider "proxmox" {
   pm_tls_insecure = true
   pm_api_url      = "https://proxmox:8006/api2/json"
-  pm_password     = "tfpassword"
   pm_user         = "terraform-user@pve"
 }
 
@@ -33,6 +32,7 @@ EOF
   bridge       = "vmbr0"
   storage_size = "64G"
   storage_pool = "proxmox"
+
   # storage_type = "zfspool"
   # target_node  = "proxmox"
 }
