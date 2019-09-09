@@ -8,7 +8,7 @@ resource "proxmox_vm_qemu" "generic-vm" {
 
   # target_node = "${var.target_node}"
 
-  clone = "disco-server-cloudimg-amd64"
+  clone    = "disco-server-cloudimg-amd64"
   cores    = "${var.cores}"
   sockets  = 1
   memory   = "${var.memory}"
@@ -24,20 +24,21 @@ resource "proxmox_vm_qemu" "generic-vm" {
     # storage_type = "${var.storage_type}"
   }
   network {
-    id     = 0
-    model  = "virtio"
-    bridge = "${var.bridge}"
-    tag    = "${var.vlanid}"
+    id      = 0
+    model   = "virtio"
+    bridge  = "${var.bridge}"
+    tag     = "${var.vlanid}"
+    macaddr = "${var.macs[count.index]}"
   }
-  network {
-    id     = 1
-    model  = "virtio"
-    bridge = "${var.bridge1}"
-    tag    = "${var.vlanid1}"
-  }
-  ssh_user = "${var.ssh_user}"
+  # network {
+  #   id     = 1
+  #   model  = "virtio"
+  #   bridge = "${var.bridge1}"
+  #   tag    = "${var.vlanid1}"
+  # }
+  ssh_user  = "${var.ssh_user}"
   os_type   = "cloud-init"
-  ipconfig0 = "ip=${var.ips[count.index]}/24,gw=${var.gateway}"
-  ipconfig1 = "ip=10.0.10.50/24"
-  sshkeys = "${var.sshkeys}"
+  ipconfig0 = "ip=dhcp"
+  # ipconfig1 = "ip=10.0.10.50/24"
+  sshkeys   = "${var.sshkeys}"
 }

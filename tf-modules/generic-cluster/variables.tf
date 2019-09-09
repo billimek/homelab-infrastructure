@@ -3,6 +3,16 @@ variable "ips" {
   type        = "list"
 }
 
+variable "macs" {
+  description = "List of MAC addresses for cluster nodes for network 0"
+  type        = "list"
+}
+
+# variable "macs-1" {
+#   description = "List of MAC addresses for cluster nodes for network 1"
+#   type        = "list"
+# }
+
 variable "nodes" {
   description = "proxmox Cluster nodes"
   type        = "list"
@@ -59,11 +69,11 @@ variable "bridge1" {
   default     = "vmbr1"
 }
 
-variable "vlanid1" {
-  description = "VLAN ID to use for network 1"
-  type        = "string"
-  default     = "-1"
-}
+# variable "vlanid1" {
+#   description = "VLAN ID to use for network 1"
+#   type        = "string"
+#   default     = "-1"
+# }
 
 variable "storage_size" {
   description = "amount of storage to give nodes"
