@@ -16,13 +16,19 @@ resource "proxmox_vm_qemu" "generic-vm" {
   bootdisk = "scsi0"
   scsihw   = "virtio-scsi-pci"
   disk {
-    id      = 0
-    type    = "scsi"
-    storage = "${var.storage_pool}"
-    size    = "${var.storage_size}"
-
-    # storage_type = "${var.storage_type}"
+    id           = 0
+    type         = "scsi"
+    storage      = "${var.storage_pool}"
+    size         = "${var.storage_size}"
+    storage_type = "${var.storage_type}"
   }
+#  disk {
+#    id           = 1
+#    type         = "scsi"
+#    storage      = "${var.storage_pool2}"
+#    size         = "${var.storage_size2}"
+#    storage_type = "${var.storage_type2}"
+#  }
   network {
     id      = 0
     model   = "virtio"
@@ -36,9 +42,8 @@ resource "proxmox_vm_qemu" "generic-vm" {
   #   bridge = "${var.bridge1}"
   #   tag    = "${var.vlanid1}"
   # }
-  ssh_user  = "${var.ssh_user}"
+  ssh_user = "${var.ssh_user}"
   os_type   = "cloud-init"
   ipconfig0 = "ip=dhcp"
-  # ipconfig1 = "ip=10.0.10.50/24"
-  sshkeys   = "${var.sshkeys}"
+  sshkeys = "${var.sshkeys}"
 }

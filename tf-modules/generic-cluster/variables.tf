@@ -84,13 +84,31 @@ variable "storage_size" {
 variable "storage_pool" {
   description = "storage pool to use for disk"
   type        = "string"
-  default     = "local"
+  default     = "proxmox"
 }
 
 variable "storage_type" {
   description = "storage type to use for disk"
   type        = "string"
-  default     = "local"
+  default     = "raw"
+}
+
+variable "storage_size2" {
+  description = "amount of storage to give nodes"
+  type        = "string"
+  default     = "64G"
+}
+
+variable "storage_pool2" {
+  description = "storage pool to use for disk"
+  type        = "string"
+  default     = "proxmox"
+}
+
+variable "storage_type2" {
+  description = "storage type to use for disk"
+  type        = "string"
+  default     = "raw"
 }
 
 # variable "target_node" {
