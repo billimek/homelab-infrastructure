@@ -48,6 +48,10 @@ terraform plan
 terraform apply
 ```
 
+## Kubernetes k3s nodes on arm devices
+
+See [arm64_pi4_nodes.md](arm64_pi4_nodes.md) instrctions for bootstrapping ARM64-based raspberry pi nodes
+
 ## k3s
 
-See [the k3s bootstrap instuctions](https://github.com/billimek/k3s-gitops/blob/master/setup/README.md) for more detail.
+See [the k3s bootstrap instuctions](https://github.com/billimek/k8s-gitops/blob/master/setup/README.md) for more detail.
