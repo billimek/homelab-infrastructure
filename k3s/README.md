@@ -50,7 +50,7 @@ terraform apply
 
 ## Kubernetes k3s nodes on arm devices
 
-See [arm64_pi4_nodes.md](arm64_pi4_nodes.md) instrctions for bootstrapping ARM64-based raspberry pi nodes
+See [arm64/README.md](arm64/README.md) instructions for bootstrapping ARM64-based raspberry pi nodes
 
 ## k3s
 
