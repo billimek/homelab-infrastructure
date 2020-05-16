@@ -8,10 +8,21 @@ message() {
 
 if [ $# -eq 0 ]
   then
-    echo "No node name supplied: call the script with '$0 <some node name> (optional <some target path>)'"
+    echo "No node name supplied: rall the script with '$0 <some node name> (optional <some target path>)'"
+    echo "e.g. '$0 user-data-k3os-pi4-a /Volumes/system-boot'"
     exit 1
 else
   NODE="$1"
+  if [ -f "$NODE" ]
+    then
+      echo "$NODE found"
+    else
+      echo "'$NODE' user-data file not found, the following casndidates were deetected, however:"
+      ls -1 user-data*
+      echo -e "\nRun the script with '$0 <some node name> (optional <some target path>)'"
+      echo "e.g. '$0 user-data-k3os-pi4-a /Volumes/system-boot'"
+      exit 1
+  fi
 fi
 
 if [ -z "$2" ]
@@ -36,5 +47,5 @@ message "writing $NODE configuration to $TARGET_VOLUME"
 
 echo "copying cmdline.txt to $TARGET_VOLUME/cmdline.txt"
 cp -f cmdline.txt "$TARGET_VOLUME/cmdline.txt"
-echo "copying user-data-${NODE} to $TARGET_VOLUME/user-data"
-envsubst < "user-data-${NODE}" > "$TARGET_VOLUME/user-data"
+echo "copying ${NODE} to $TARGET_VOLUME/user-data"
+envsubst < "${NODE}" > "$TARGET_VOLUME/user-data"
