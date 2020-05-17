@@ -6,7 +6,7 @@ Following the [bootstrapping ISO](https://github.com/rancher/k3os#remastering-is
 
 ### helper script
 
-Run `create-k3os-iso.sh` script to automatically create configured ISO for loading to target node/VM
+Run `[create-k3os-iso.sh](create-k3os-iso.sh)` script to automatically create configured ISO for loading to target node/VM
 
 ### manual steps
 
