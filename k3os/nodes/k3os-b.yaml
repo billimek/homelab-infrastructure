@@ -1,3 +1,4 @@
+hostname: k3os-b
 ssh_authorized_keys:
 - github:billimek
 - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMqgYe/v1r9WHIydNgas3hlXYpdHgPy04ZEYVoZirYpZD/tUuZ5XYzn4LkatRu/lD6YOKISMxRGSV0fEXqFjOQ2Tk+NlgkSOawy/0ED5X/LvI1Sqs39ilFeerKAK0H+ZJfOZzRjlG98QF+0/OFShsHK9JdwmLAH4+wPOzxpwkkXtyVj0mzuFuz84Wpp1uYRpBFp7FRK5pf2wOaZgzu8rdh/zaS3E2vZVYm6gtJuKVfceT0K+IbPdAazKljT9m0xYsXnP0JQCCuxW6GTmVI0dmFSa+VGg0anjUAU0gnm9A9mcOU1NfxigPiEaKjMMFUxtwJQGm8+iYraVsnySzzRQfn jeff@hackintosh.local
@@ -10,20 +11,14 @@ k3os:
   - kvm
   - nvme
   - nfs
-  # sysctl:
-  #   kernel.printk: 4 4 1 7
-  #   kernel.kptr_restrict: 1
   dns_nameservers:
   - 10.0.7.1
   ntp_servers:
-  - 0.us.pool.ntp.org
-  - 1.us.pool.ntp.org
-  password: "<redacted>"
+  - 10.0.7.1
+  password: "$K3OS_PASSWORD"
+  token: "$K3OS_TOKEN"
+  labels:
+    app: intel-gpu-plugin
   server_url: https://k3s-0:6443
-  token: <redacted>
-  # labels:
-  #   region: us-west-1
-  #   somekey: somevalue
   k3s_args:
   - agent
-  # - "--disable-agent"

@@ -1,5 +1,7 @@
 # Light-weight mixed-architecture cluster setup with k3s
 
+**DERECATED:** `k3s` isn't used any-more so these instructions are out-dated
+
 ## Kubernetes k3s nodes in proxmox
 
 ### PREREQUISITES
