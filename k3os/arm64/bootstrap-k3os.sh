@@ -6,22 +6,24 @@ message() {
   echo "######################################################################"
 }
 
+usage() {
+  echo "Run the script with '$0 <some node name> (optional <some target path>)'"
+  echo "e.g. '$0 k3os-pi4-a /Volumes/system-boot'"
+  echo -e "the following node files are detected:\n"
+  ls -1 nodes
+  exit 1
+}
+
 if [ $# -eq 0 ]
   then
-    echo "No node name supplied: rall the script with '$0 <some node name> (optional <some target path>)'"
-    echo "e.g. '$0 user-data-k3os-pi4-a /Volumes/system-boot'"
-    exit 1
+    usage
 else
   NODE="$1"
-  if [ -f "$NODE" ]
+  if [ -f "nodes/$NODE" ]
     then
       echo "$NODE found"
     else
-      echo "'$NODE' user-data file not found, the following casndidates were deetected, however:"
-      ls -1 user-data*
-      echo -e "\nRun the script with '$0 <some node name> (optional <some target path>)'"
-      echo "e.g. '$0 user-data-k3os-pi4-a /Volumes/system-boot'"
-      exit 1
+      usage
   fi
 fi
 
@@ -47,5 +49,5 @@ message "writing $NODE configuration to $TARGET_VOLUME"
 
 echo "copying cmdline.txt to $TARGET_VOLUME/cmdline.txt"
 cp -f cmdline.txt "$TARGET_VOLUME/cmdline.txt"
-echo "copying ${NODE} to $TARGET_VOLUME/user-data"
-envsubst < "${NODE}" > "$TARGET_VOLUME/user-data"
+echo "copying nodes/${NODE} to $TARGET_VOLUME/user-data"
+envsubst < "nodes/${NODE}" > "$TARGET_VOLUME/user-data"
