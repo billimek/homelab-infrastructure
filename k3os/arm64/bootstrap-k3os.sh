@@ -49,5 +49,7 @@ message "writing $NODE configuration to $TARGET_VOLUME"
 
 echo "copying cmdline.txt to $TARGET_VOLUME/cmdline.txt"
 cp -f cmdline.txt "$TARGET_VOLUME/cmdline.txt"
+echo "copying network-config to $TARGET_VOLUME/network-config"
+cp -f network-config "$TARGET_VOLUME/network-config"
 echo "copying nodes/${NODE} to $TARGET_VOLUME/user-data"
 envsubst < "nodes/${NODE}" > "$TARGET_VOLUME/user-data"
