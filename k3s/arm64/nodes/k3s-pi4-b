@@ -1,6 +1,6 @@
 #cloud-config
 
-hostname: k3s-pi4-a
+hostname: k3s-pi4-b
 
 chpasswd:
   expire: false

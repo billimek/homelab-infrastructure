@@ -8,3 +8,5 @@ vlans:
     dhcp4: true
     id: 20
     link: eth0
+    nameservers:
+      addresses: [ "10.0.7.1" ]
