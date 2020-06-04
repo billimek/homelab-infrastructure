@@ -1,5 +1,7 @@
 # k3os bootstrapping
 
+**Due to [issues](https://github.com/billimek/homelab-infrastructure/issues/19) with k3os on raspberry pi devices and odroid-h2 devices, will not be using k2os as the base OS for k3s node, for now**
+
 ## 'regular' amd64/VM nodes
 
 Following the [bootstrapping ISO](https://github.com/rancher/k3os#remastering-iso) installation method:

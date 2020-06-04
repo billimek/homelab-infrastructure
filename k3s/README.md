@@ -1,56 +1,69 @@
 # Light-weight mixed-architecture cluster setup with k3s
 
-**DERECATED:** `k3s` isn't used any-more so these instructions are out-dated
+## Proxmox
 
-## Kubernetes k3s nodes in proxmox
-
-### PREREQUISITES
-
-- Install terraform
-  - Just download Terraform 0.11 from the [downloads page](https://releases.hashicorp.com/terraform/0.11.14/) and drop it somewhere in your $PATH
-- Install the [Terraform Proxmox provider](https://github.com/Telmate/terraform-provider-proxmox) by running `./install_terraform_provider_proxmox.sh` (must have go installed already)
-- Have a proxmox host
+A VM template is created from the [ubuntu cloudimg image source](https://cloud-images.ubuntu.com/focal/current/), and k3s nodes are created from that template with the necessary cloud-init data being passed-in as a cdrom device via a previously configured ISO.
 
 ### Base template
+
+**This is a "one time" activity**
 
 On `proxmox` host OS,
 
 Creating the base template from the ubuntu cloud-init image:
 
 ```shell
-qm create 9101 --memory 4096 --net0 virtio,bridge=vmbr0
-qm importdisk 9101 /tank/proxmox/template/iso/disco-server-cloudimg-amd64.img proxmox
-qm set 9101 --scsihw virtio-scsi-pci --scsi0 proxmox:9101/vm-9101-disk-0.raw,ssd=1,discard=on
-qm set 9101 --name disco-server-cloudimg-amd64
-qm set 9101 --ide2 proxmox:cloudinit
-qm set 9101 --boot c --bootdisk scsi0
-qm set 9101 --serial0 socket --vga serial0
-qm set 9101 --agent enabled=1,fstrim_cloned_disks=1
-qm set 9101 --sshkey ~/.ssh/id_rsa.pub
-qm set 9101 --ipconfig0 ip=10.0.7.50/24,gw=10.0.7.1
+qm create 9200 --name focal-server-cloudimg-amd64 --memory 4096 --cpu cputype=host --cores 4 --serial0 socket --vga serial0 --net0 virtio,bridge=vmbr0,tag=20 --agent enabled=1,fstrim_cloned_disks=1
+qm importdisk 9200 /tank/proxmox/template/iso/focal-server-cloudimg-amd64.img proxmox -format qcow2
+qm set 9200 --scsihw virtio-scsi-pci --scsi0 proxmox:9200/vm-9200-disk-0.qcow2,ssd=1,discard=on
+qm template 9200
 ```
 
-Install basic necessities to the VM template and fix /etc/resolve.conf
+### Create node-specific cloud-init seed ISO
+
+Leverage the [`cloud-localds`](https://manpages.debian.org/testing/cloud-image-utils/cloud-localds.1.en.html) tool to inject cloud-init user-data to a special ISO be consumed by the cloudimg.  This generated ISO, when added to the VM, will automatically be detected and used by first boot to run the cloud-init instructions.  This was intentionally done vs using the builtin proxmox cloud-init approach becuase there is more that can be manipulated with the 'raw' cloud-init.
+
+See [`create-k3s-seed-iso.sh`](create-k3s-seed-iso.sh) script for details on how this is is done.
+
+### clone from template
+
+For each 'node' that needs to be created,
+
+* clone to a new VM
+* resize the hard drive to the new desired size
+* force booting from the new drive
+* add the seed ISO file to the VM
+
+For example, for node `k3s-c`, we create VM ID 402 by running the following:
 
 ```shell
-qm start 9101 && sleep 15 && ssh ubuntu@10.0.7.50
-sudo apt-get install glances iotop zsh jq ceph-common nethogs iperf qemu-guest-agent nfs-common
-sudo rm /etc/resolv.conf
-sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-sudo shutdown -h "now"
-qm template 9101
+qm clone 9200 402 --name k3s-c --format raw --full --storage zfs-prox
+qm resize 402 scsi0 200G
+qm set 402 --boot c --bootdisk scsi0
+qm set 402 -cdrom /mnt/pve/proxmox/template/iso/k3s-seed-k3s-c.iso
+qm migrate 402 proxmox-c --with-local-disks --online
 ```
 
-### Create the nodes
+### customize the created node
 
-```shell
-export PM_PASS=<your_proxmox_terraform_password_here>
-terraform init
-terraform plan
-terraform apply
-```
+Make any required changes to the newly-created VM.  This will be things like:
 
-## Kubernetes k3s nodes on arm devices
+* adjusting cores
+* adjusting memory
+* adding real physical drives to the VM (e.g. for ceph OSDs)
+* adding any GPU passthrough devices
+
+## Physical devices (amd64)
+
+Based on all of my investigation, as of 2020-06-04:
+
+* The Ubuntu 20.04 [autoinstaller](https://wiki.ubuntu.com/FoundationsTeam/AutomatedServerInstalls/) simply doesn't work and/or is far too buggy to reliably use, after dozens of attempts to make it work properly in a test setup
+* There doesn't seem to be a path forward to installing Ubuntu 20.04 server in a generic way that also leverages cloud-init, like we do for VMs are raspberry pi devices
+* The 'best' approach is to manually run through the Ubuntu 20.04 'live server' installer ISO (from USB), manually configure the server settings; followed by hand-crafting post-installation changes that we would normally do via cloud-init
+
+The only physical device in my current compute environment is an Odroid-H2.  The plan will be to install Ubuntu Live Server 20.04 via a USB, apply the normal cloud-init changes manually, and then install k3s manually.
+
+## arm64 (raspberry pi4)
 
 See [arm64/README.md](arm64/README.md) instructions for bootstrapping ARM64-based raspberry pi nodes
 

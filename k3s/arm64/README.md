@@ -6,45 +6,24 @@ See [this wiki for details](https://wiki.ubuntu.com/ARM/RaspberryPi)
 
 ### bootable image
 
-Download the [19.10.1 arm64 image](http://cdimage.ubuntu.com/releases/eoan/release/ubuntu-19.10.1-preinstalled-server-arm64+raspi3.img.xz) and save to an SD card.  [etcher works well for this](https://www.balena.io/etcher/?ref=etcher_menu)
+Download the [20.04 arm64 image](http://cdimage.ubuntu.com/releases/focal/release/ubuntu-20.04-preinstalled-server-arm64+raspi.img.xz) and save to an SD card.  [etcher works well for this](https://www.balena.io/etcher/?ref=etcher_menu)
+
+### manual setup
 
 After flashing the image, re-mount the drive and copy the following files into `<drive>/system-boot/`:
 
 * `user-data`
 * `network-config`
-* `nobtcmd.txt`
+* `cmdline.txt`
 
-## boot into newly-provisioned ubuntu arm64 node
+### scripted setup
 
-It will take some time for the [cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html) settings above to execute, so you may need to wait a while (10 mins?) before attempting to ssh into the newly-provisioned node.
+This can be streamlined with the following script: `bootstrap-k3s.sh`:
 
-The default username password is ubuntu/ubuntu.  Upon first login, you will be required to change the password.  
-
-### (OPTIONAL) provision external storage
-
-Idenfity the UUID of the external storage device,
-
-```
-ls -al /dev/disk/by-uuid/
+```shell
+./bootstrap-k3s.sh k3s-pi4-a /Volumes/system-boot
 ```
 
-Add the following to `/etc/fstab` with the device info (e.g. if the uuid is `cf43ce16-c002-4222-9c92-787cf70e20dc`):
+## boot into newly-provisioned ubuntu arm64 node with k3os
 
-```
-sudo vim /etc/fstab
-```
-
-Add the new entry to the file:
-
-```
-UUID=cf43ce16-c002-4222-9c92-787cf70e20dc /mnt/usb ext4 defaults 1 2
-```
-Mount the new drive:
-
-```
-sudo mount -a
-```
-
-After that, a reboot of the node is advisable.
-
-After this, you should be able to 'join' the node to your k3s cluster.
+It will take some time for the [cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html) settings above to execute, so you may need to wait a while (10 mins?) before attempting to ssh into the newly-provisioned node. as the 'ubuntu' user.  The new node should auto-join the k3s cluster.
