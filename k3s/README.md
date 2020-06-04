@@ -55,7 +55,13 @@ Make any required changes to the newly-created VM.  This will be things like:
 
 ## Physical devices (amd64)
 
-TBD
+Based on all of my investigation, as of 2020-06-04:
+
+* The Ubuntu 20.04 [autoinstaller](https://wiki.ubuntu.com/FoundationsTeam/AutomatedServerInstalls/) simply doesn't work and/or is far too buggy to reliably use, after dozens of attempts to make it work properly in a test setup
+* There doesn't seem to be a path forward to installing Ubuntu 20.04 server in a generic way that also leverages cloud-init, like we do for VMs are raspberry pi devices
+* The 'best' approach is to manually run through the Ubuntu 20.04 'live server' installer ISO (from USB), manually configure the server settings; followed by hand-crafting post-installation changes that we would normally do via cloud-init
+
+The only physical device in my current compute environment is an Odroid-H2.  The plan will be to install Ubuntu Live Server 20.04 via a USB, apply the normal cloud-init changes manually, and then install k3s manually.
 
 ## arm64 (raspberry pi4)
 
