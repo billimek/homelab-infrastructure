@@ -2,7 +2,7 @@
 
 ## Proxmox
 
-A VM template is created from the ubuntu cloudimg image source, and k3s nodes are created from that template with the necessary cloud-init data being passed-in as a cdrom device via a previously configured ISO.
+A VM template is created from the [ubuntu cloudimg image source](https://cloud-images.ubuntu.com/focal/current/), and k3s nodes are created from that template with the necessary cloud-init data being passed-in as a cdrom device via a previously configured ISO.
 
 ### Base template
 
