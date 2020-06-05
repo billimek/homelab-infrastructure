@@ -1,6 +1,6 @@
 # k3os bootstrapping
 
-**Due to [issues](https://github.com/billimek/homelab-infrastructure/issues/19) with k3os on raspberry pi devices and odroid-h2 devices, will not be using k2os as the base OS for k3s node, for now**
+**DEPRECATED:** Due to [issues](https://github.com/billimek/homelab-infrastructure/issues/19) with k3os on raspberry pi devices and odroid-h2 devices, will not be using k3os as the base OS for k3s node, for now
 
 ## 'regular' amd64/VM nodes
 
@@ -8,7 +8,7 @@ Following the [bootstrapping ISO](https://github.com/rancher/k3os#remastering-is
 
 ### helper script
 
-Run `[create-k3os-iso.sh](create-k3os-iso.sh)` script to automatically create configured ISO for loading to target node/VM
+Run [`create-k3os-iso.sh`](create-k3os-iso.sh) script to automatically create configured ISO for loading to target node/VM
 
 ### manual steps
 
