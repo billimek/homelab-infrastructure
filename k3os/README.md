@@ -1,4 +1,4 @@
-# k3os bootstrapping
+# DEPRECATED - k3os bootstrapping
 
 **DEPRECATED:** Due to [issues](https://github.com/billimek/homelab-infrastructure/issues/19) with k3os on raspberry pi devices and odroid-h2 devices, will not be using k3os as the base OS for k3s node, for now
 

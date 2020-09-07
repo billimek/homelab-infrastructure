@@ -1,4 +1,4 @@
-# HA cluster setup with rancher/rke
+# DEPRECATED - HA cluster setup with rancher/rke
 
 **DERECATED:** `rke` isn't used any-more so these instructions are out-dated
 
