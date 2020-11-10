@@ -35,7 +35,7 @@ ntp:
 runcmd:
 - ln -sfn /run/systemd/resolve/resolv.conf /etc/resolv.conf
 - apt-get install -fy linux-modules-extra-$(uname -r)
-- 'curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$K3OS_TOKEN sh -s'
+- 'curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$K3OS_TOKEN sh -s - --node-label "k3s-upgrade=enabled"'
 - apt autoremove -fy
 - sync
 - reboot -f
