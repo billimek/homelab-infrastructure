@@ -35,6 +35,6 @@ packages:
 
 runcmd:
 - ln -sfn /run/systemd/resolve/resolv.conf /etc/resolv.conf
-- curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$K3OS_TOKEN sh -s - --node-taint arm=true:NoExecute  --node-label "k3s-upgrade=enabled"
+- curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$K3S_TOKEN sh -s - --node-taint arm=true:NoExecute  --node-label "k3s-upgrade=enabled"
 - sync
 - reboot -f
